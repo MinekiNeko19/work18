@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <ctype.h>
 
 #define READ 0
 #define WRITE 1
@@ -35,6 +36,11 @@ int main() {
         // read from parent
         read(ptoc[READ], line, 100);
         // random
+        int i = 0;
+        while (line[i] != '\n') {
+            line[i] = toupper(line[i]);
+            i++;
+        }
         // send to parent
         write(ctop[WRITE], line, 100);
     }
