@@ -15,21 +15,28 @@ int main() {
     pipe(ctop);
     pipe(ptoc);
     int f = fork();
+    
+    int e = 1;
 
-    while (1) {
+    while (e) {
         if (f) { // parent
             // closing pipes
             close(ctop[WRITE]);
             close(ptoc[READ]);
             // gets input
+            printf("Enter input (exit to exit): ");
             fgets(line, 100, stdin);
+            if (!strcmp(line, "exit\n")) {
+                e = 0;
+            } else {
             // sends to child
             write(ptoc[WRITE], line, 100);
-            printf("sent to child: %s\n", line);
+            // printf("sent to child: %s\n", line);
             // reads from child            
             char line[100];
             read(ctop[READ], line, 100);
-            printf("parent got: %s\n",line);
+            printf("parent got from child: %s\n",line);
+            }
         }
         else { // child
             // closing pipes
